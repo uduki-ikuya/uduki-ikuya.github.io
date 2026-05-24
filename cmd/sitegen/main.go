@@ -6,9 +6,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/yaml.v3"
 )
 
-// Link represents an external link card
+// Link represents an external link card.
 type Link struct {
 	ID          string
 	URL         string
@@ -17,64 +19,204 @@ type Link struct {
 	SVGIcon     template.HTML
 }
 
-// Profile represents the author's profile data
+type BlogLink struct {
+	Title       string
+	URL         string
+	Description string
+}
+
+type DetailItem struct {
+	Label string
+	Value string
+}
+
+type WorkItem struct {
+	Title    string
+	Platform string
+	URL      string
+	Summary  string
+}
+
+type WorkSection struct {
+	ID          string
+	Title       string
+	Description string
+	Items       []WorkItem
+}
+
+// Profile represents the author's profile data.
 type Profile struct {
 	Name     string
 	Subtitle string
 	Bio      string
-	Links    []Link
+	Avatar   string
+	Cover    string
+	Details  []DetailItem
+	Social   []Link
+	Blogs    []BlogLink
+}
+
+type PageData struct {
+	Profile Profile
+	Works   []WorkSection
+}
+
+// raw structures for YAML unmarshalling.
+type rawLink struct {
+	ID          string `yaml:"id"`
+	URL         string `yaml:"url"`
+	Title       string `yaml:"title"`
+	Description string `yaml:"description"`
+	SVG         string `yaml:"svg"`
+}
+
+type rawDetailItem struct {
+	Label string `yaml:"label"`
+	Value string `yaml:"value"`
+}
+
+type rawBlogLink struct {
+	Title       string `yaml:"title"`
+	URL         string `yaml:"url"`
+	Description string `yaml:"description"`
+}
+
+type rawProfile struct {
+	Name     string          `yaml:"name"`
+	Subtitle string          `yaml:"subtitle"`
+	Avatar   string          `yaml:"avatar"`
+	Cover    string          `yaml:"cover"`
+	Bio      string          `yaml:"bio"`
+	Details  []rawDetailItem `yaml:"details"`
+	Social   []rawLink       `yaml:"social"`
+	Blogs    []rawBlogLink   `yaml:"blogs"`
+}
+
+type rawWorkItem struct {
+	Title    string `yaml:"title"`
+	Platform string `yaml:"platform"`
+	URL      string `yaml:"url"`
+	Summary  string `yaml:"summary"`
+}
+
+type rawWorkSection struct {
+	ID          string        `yaml:"id"`
+	Title       string        `yaml:"title"`
+	Description string        `yaml:"description"`
+	Items       []rawWorkItem `yaml:"items"`
+}
+
+type rawWorks struct {
+	Sections []rawWorkSection `yaml:"sections"`
+}
+
+func loadProfile(path string) (Profile, error) {
+	var rp rawProfile
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return Profile{}, err
+	}
+	if err := yaml.Unmarshal(b, &rp); err != nil {
+		return Profile{}, err
+	}
+
+	p := Profile{
+		Name:     rp.Name,
+		Subtitle: rp.Subtitle,
+		Bio:      rp.Bio,
+		Avatar:   rp.Avatar,
+		Cover:    rp.Cover,
+	}
+
+	for _, detail := range rp.Details {
+		p.Details = append(p.Details, DetailItem{
+			Label: detail.Label,
+			Value: detail.Value,
+		})
+	}
+
+	for _, rl := range rp.Social {
+		p.Social = append(p.Social, Link{
+			ID:          rl.ID,
+			URL:         rl.URL,
+			Title:       rl.Title,
+			Description: rl.Description,
+			SVGIcon:     template.HTML(rl.SVG),
+		})
+	}
+
+	for _, blog := range rp.Blogs {
+		p.Blogs = append(p.Blogs, BlogLink{
+			Title:       blog.Title,
+			URL:         blog.URL,
+			Description: blog.Description,
+		})
+	}
+
+	return p, nil
+}
+
+func loadWorks(path string) ([]WorkSection, error) {
+	var rw rawWorks
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	if err := yaml.Unmarshal(b, &rw); err != nil {
+		return nil, err
+	}
+
+	var works []WorkSection
+	for _, section := range rw.Sections {
+		ws := WorkSection{
+			ID:          section.ID,
+			Title:       section.Title,
+			Description: section.Description,
+		}
+		for _, item := range section.Items {
+			ws.Items = append(ws.Items, WorkItem{
+				Title:    item.Title,
+				Platform: item.Platform,
+				URL:      item.URL,
+				Summary:  item.Summary,
+			})
+		}
+		works = append(works, ws)
+	}
+	return works, nil
 }
 
 func main() {
-	// 1. Define data
-	profile := Profile{
-		Name:     "卯月 幾哉",
-		Subtitle: "Novelist Portfolio",
-		Bio:      "言葉を通じて、誰かの心に小さな灯火をともすような物語を紡いでいます。ファンタジー、SF、現代ドラマなど様々なジャンルの小説をネット上で公開・執筆しています。",
-		Links: []Link{
-			{
-				ID:          "link-kakuyomu",
-				URL:         "https://kakuyomu.jp/",
-				Title:       "カクヨム",
-				Description: "kakuyomu.jp - 連載作品・短編の掲載ページ",
-				SVGIcon:     template.HTML(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>`),
-			},
-			{
-				ID:          "link-narou",
-				URL:         "https://syosetu.com/",
-				Title:       "小説家になろう",
-				Description: "syosetu.com - 投稿作品の一覧ページ",
-				SVGIcon:     template.HTML(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>`),
-			},
-			{
-				ID:          "link-twitter",
-				URL:         "https://x.com/",
-				Title:       "X (旧 Twitter)",
-				Description: "@uduki_ikuya - 近況報告や執筆中のつぶやき",
-				SVGIcon:     template.HTML(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>`),
-			},
-			{
-				ID:          "link-website",
-				URL:         "https://uduki-ikuya.github.io",
-				Title:       "作品ポートフォリオ (準備中)",
-				Description: "本サイトにて独自の作品管理ページを開発予定です",
-				SVGIcon:     template.HTML(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`),
-			},
-		},
+	profile, err := loadProfile("data/profile.yaml")
+	if err != nil {
+		log.Fatalf("Failed to load profile: %v", err)
 	}
 
-	// 2. Ensure output directory exists
+	works, err := loadWorks("data/works.yaml")
+	if err != nil {
+		log.Fatalf("Failed to load works: %v", err)
+	}
+
+	data := PageData{
+		Profile: profile,
+		Works:   works,
+	}
+
 	outputDir := "site"
 	if err := os.MkdirAll(filepath.Join(outputDir, "css"), 0755); err != nil {
 		log.Fatalf("Failed to create output directory: %v", err)
 	}
+	if err := os.MkdirAll(filepath.Join(outputDir, "image"), 0755); err != nil {
+		log.Fatalf("Failed to create images output directory: %v", err)
+	}
 
-	// 3. Copy CSS file
 	if err := copyFile("src/css/style.css", filepath.Join(outputDir, "css/style.css")); err != nil {
 		log.Fatalf("Failed to copy CSS: %v", err)
 	}
+	if err := copyDir("src/image", filepath.Join(outputDir, "image")); err != nil {
+		log.Fatalf("Failed to copy images: %v", err)
+	}
 
-	// 4. Render HTML template
 	tmpl, err := template.ParseFiles("src/index.html")
 	if err != nil {
 		log.Fatalf("Failed to parse template: %v", err)
@@ -86,7 +228,7 @@ func main() {
 	}
 	defer outFile.Close()
 
-	if err := tmpl.Execute(outFile, profile); err != nil {
+	if err := tmpl.Execute(outFile, data); err != nil {
 		log.Fatalf("Failed to execute template: %v", err)
 	}
 
@@ -108,6 +250,30 @@ func copyFile(src, dst string) error {
 
 	if _, err = io.Copy(out, in); err != nil {
 		return err
+	}
+	return nil
+}
+
+func copyDir(srcDir, dstDir string) error {
+	if err := os.MkdirAll(dstDir, 0755); err != nil {
+		return err
+	}
+	entries, err := os.ReadDir(srcDir)
+	if err != nil {
+		return err
+	}
+	for _, entry := range entries {
+		srcPath := filepath.Join(srcDir, entry.Name())
+		dstPath := filepath.Join(dstDir, entry.Name())
+		if entry.IsDir() {
+			if err := copyDir(srcPath, dstPath); err != nil {
+				return err
+			}
+			continue
+		}
+		if err := copyFile(srcPath, dstPath); err != nil {
+			return err
+		}
 	}
 	return nil
 }

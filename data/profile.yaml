@@ -1,0 +1,47 @@
+name: "卯月 幾哉"
+subtitle: "Web作家 ポートフォリオ"
+avatar: "image/profile.png"
+cover: "image/cover.jpg"
+bio: |-
+  卯月幾哉（うづき いくや）のホームページへようこそ。
+  インターネットを中心に、アマチュアとして文芸創作活動をしています。本業は会社員です。
+  初めて小説を書いたのは20年以上前。ブランクも多いですが、細々と創作を続けています。
+  ときどき詩やエッセイを書くこともあります。
+
+details:
+  - label: "ペンネーム"
+    value: "卯月 幾哉（うづき いくや）"
+  - label: "活動"
+    value: "インターネットを中心に、アマチュアとして文芸創作活動を行っています。"
+  - label: "経歴"
+    value: "本業は会社員。初めて小説を書いたのは20年以上前です。"
+  - label: "作品スタイル"
+    value: "小説を中心に、詩やエッセイも時折書いています。"
+
+social:
+  - id: "link-twitter"
+    url: "https://twitter.com/uduki_ikuya"
+    title: "X (旧Twitter)"
+    description: "@uduki_ikuya - 作品案内や短文を投稿しています。"
+    svg: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z\"></path></svg>"
+  - id: "link-bluesky"
+    url: "https://bsky.app/profile/uduki-ikuya.bsky.social"
+    title: "Bluesky"
+    description: "@uduki-ikuya.bsky.social - 作品の進捗や考えを投稿しています。"
+    svg: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M8 12h8\"></path><path d=\"M12 8v8\"></path></svg>"
+  - id: "link-threads"
+    url: "https://www.threads.net/@uduki.ikuya"
+    title: "Threads"
+    description: "@uduki.ikuya - 短文中心の創作や近況を発信しています。"
+    svg: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h18\"></path><path d=\"M12 3v18\"></path></svg>"
+
+blogs:
+  - title: "言葉の苗が育つ場所"
+    url: "https://sites.google.com/view/uduki-ikuya/"
+    description: "はてなブログ - 創作や小説についての考えを綴るメインブログ。"
+  - title: "note"
+    url: "https://note.com/uduki_ikuya/"
+    description: "詩やエッセイ・掌編小説を掲載しています。"
+  - title: "しずかなインターネット"
+    url: "https://sizu.me/uduki_ikuya"
+    description: "短文・詩的表現を中心に公開している別ブログ。"

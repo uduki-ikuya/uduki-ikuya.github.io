@@ -3,44 +3,171 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="小説家・{{ .Name }}（uduki-ikuya）の公式ポートフォリオサイトです。ネット上で公開している作品情報やSNSリンクをまとめています。">
+  <meta name="description" content="小説家・{{ .Profile.Name }}（uduki-ikuya）の公式ポートフォリオサイトです。プロフィール、作品案内、SNS、ブログをひとつのページにまとめました。">
   <meta name="robots" content="index, follow">
-  <title>{{ .Name }} | 小説家ポートフォリオ</title>
+  <title>{{ .Profile.Name }} | 小説家ポートフォリオ</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
 </head>
 <body>
-
-  <div class="container">
-    <header>
-      <div class="avatar-container">
-        <div class="avatar-fallback">幾</div>
+  <nav class="page-nav">
+    <a href="#top">TOP</a>
+    <a href="#profile">プロフィール</a>
+    <a href="#works">作品案内</a>
+    <a href="#sns">SNS</a>
+    <a href="#blog">ブログ</a>
+  </nav>
+  <div class="container" id="top">
+    <div class="hero-panel">
+      <div class="hero-copy">
+        <img class="hero-avatar" src="{{ .Profile.Avatar }}" alt="{{ .Profile.Name }}のプロフィール画像">
+        <div class="hero-text">
+          <p class="eyebrow">作家ポートフォリオ</p>
+          <h1>{{ .Profile.Name }}</h1>
+          <p class="subtitle">{{ .Profile.Subtitle }}</p>
+          <p class="hero-bio">{{ .Profile.Bio }}</p>
+        </div>
       </div>
-      <h1>{{ .Name }}</h1>
-      <p class="subtitle">{{ .Subtitle }}</p>
-      <p class="bio">
-        {{ .Bio }}
-      </p>
-    </header>
+    </div>
 
-    <main class="links-section">
-      {{ range .Links }}
-      <a href="{{ .URL }}" target="_blank" rel="noopener noreferrer" class="link-card" id="{{ .ID }}">
-        <div class="link-icon">
-          {{ .SVGIcon }}
+    <main>
+      <section id="profile" class="section panel">
+        <div class="section-header">
+          <h2>プロフィール</h2>
         </div>
-        <div class="link-info">
-          <span class="link-title">{{ .Title }}</span>
-          <span class="link-description">{{ .Description }}</span>
+        <p class="section-desc">筆者の経歴や創作スタイルを紹介します。Web上に公開している作品を中心にまとめています。</p>
+        <div class="section-grid">
+          <div class="profile-card">
+            <h3>作家について</h3>
+            <p>{{ .Profile.Bio }}</p>
+          </div>
         </div>
-      </a>
-      {{ end }}
+      </section>
+
+      <section id="works" class="section panel">
+        <div class="section-header">
+          <h2>作品案内</h2>
+        </div>
+        <p class="section-desc">登録先掲載作品・おすすめ作品・投稿した小説の一覧を、ひとつのページでご紹介します。</p>
+        {{ range .Works }}
+        <article class="work-group" id="{{ .ID }}">
+          <h3>{{ .Title }}</h3>
+          <p class="work-section-description">{{ .Description }}</p>
+          <div class="work-items">
+            {{ range .Items }}
+            {{ if .URL }}
+            <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+                <span class="work-platform">{{ .Platform }}</span>
+              </div>
+              <p>{{ .Summary }}</p>
+            </a>
+            {{ else }}
+            <div class="work-card">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+                <span class="work-platform">{{ .Platform }}</span>
+              </div>
+              <p>{{ .Summary }}</p>
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+        </article>
+        {{ end }}
+      </section>
+
+      <section id="sns" class="section panel">
+        <div class="section-header">
+          <h2>SNS</h2>
+        </div>
+        <p class="section-desc">作品案内や短文の創作を発信しています。主に X、Bluesky、Threads の情報を掲載中です。</p>
+        <div class="links-section">
+          {{ range .Profile.Social }}
+          <a href="{{ .URL }}" target="_blank" rel="noopener noreferrer" class="link-card" id="{{ .ID }}">
+            <div class="link-icon">{{ .SVGIcon }}</div>
+            <div class="link-info">
+              <span class="link-title">{{ .Title }}</span>
+              <span class="link-description">{{ .Description }}</span>
+            </div>
+          </a>
+          {{ end }}
+        </div>
+      </section>
+
+      <section id="blog" class="section panel">
+        <div class="section-header">
+          <h2>ブログ</h2>
+        </div>
+        <p class="section-desc">創作や詩、エッセイなどを掲載しているブログ・メディアです。各リンク先から詳細をご覧ください。</p>
+        <div class="blog-grid">
+          {{ range .Profile.Blogs }}
+          <article class="blog-card">
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Description }}</p>
+            <a class="blog-cta" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">閲覧する</a>
+          </article>
+          {{ end }}
+        </div>
+      </section>
     </main>
 
     <footer>
-      <p class="copyright">&copy; 2026 uduki-ikuya. All rights reserved.</p>
+      <p>&copy; 2026 {{ .Profile.Name }}. All rights reserved.</p>
     </footer>
   </div>
+  <script>
+    (function(){
+      const links = Array.from(document.querySelectorAll('.page-nav a'));
+      const sections = Array.from(document.querySelectorAll('main section[id]'));
+      const idToLink = {};
+      links.forEach(a => {
+        const href = a.getAttribute('href') || '';
+        if (href.startsWith('#')) idToLink[href.slice(1)] = a;
+      });
 
+      // determine which section covers the viewport center
+      function updateActive(){
+        const center = window.innerHeight / 2;
+        let chosen = null;
+        let minDist = Number.POSITIVE_INFINITY;
+        sections.forEach(s => {
+          const r = s.getBoundingClientRect();
+          if (r.top <= center && r.bottom > center) {
+            chosen = s.id;
+            minDist = 0;
+          } else {
+            const dist = Math.min(Math.abs(r.top - center), Math.abs(r.bottom - center));
+            if (dist < minDist) { minDist = dist; chosen = s.id; }
+          }
+        });
+        if (chosen) {
+          links.forEach(l => l.classList.remove('active'));
+          if (idToLink[chosen]) idToLink[chosen].classList.add('active');
+        }
+      }
+
+      let raf = null;
+      window.addEventListener('scroll', () => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => { updateActive(); raf = null; });
+      }, { passive: true });
+      window.addEventListener('resize', updateActive);
+
+      // clicks / hash behavior
+      links.forEach(a => a.addEventListener('click', ev => {
+        links.forEach(l => l.classList.remove('active'));
+        ev.currentTarget.classList.add('active');
+      }));
+      window.addEventListener('load', () => {
+        const h = location.hash.replace('#','');
+        if (h && idToLink[h]) {
+          links.forEach(l => l.classList.remove('active'));
+          idToLink[h].classList.add('active');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
