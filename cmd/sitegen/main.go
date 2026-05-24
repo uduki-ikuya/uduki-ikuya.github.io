@@ -28,7 +28,7 @@ type Profile struct {
 func main() {
 	// 1. Define data
 	profile := Profile{
-		Name:     "卯月 郁哉",
+		Name:     "卯月 幾哉",
 		Subtitle: "Novelist Portfolio",
 		Bio:      "言葉を通じて、誰かの心に小さな灯火をともすような物語を紡いでいます。ファンタジー、SF、現代ドラマなど様々なジャンルの小説をネット上で公開・執筆しています。",
 		Links: []Link{

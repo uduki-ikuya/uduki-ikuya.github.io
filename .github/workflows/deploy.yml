@@ -36,7 +36,7 @@ jobs:
       # Build the site using our custom Go generator.
       # The generator outputs all final static assets directly to site/ folder.
       - name: Build site
-        run: go run main.go
+        run: make build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
