@@ -46,4 +46,3 @@ open site/index.html   # macOS の場合、生成されたページをローカ�
 ---
 
 © 2026 uduki-ikuya
-
