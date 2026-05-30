@@ -31,10 +31,12 @@ type DetailItem struct {
 }
 
 type WorkItem struct {
-	Title    string
-	Platform string
-	URL      string
-	Summary  string
+	Title       string
+	Platform    string
+	URL         string
+	Domain      string
+	Summary     string
+	Description string
 }
 
 type WorkSection struct {
@@ -93,10 +95,12 @@ type rawProfile struct {
 }
 
 type rawWorkItem struct {
-	Title    string `yaml:"title"`
-	Platform string `yaml:"platform"`
-	URL      string `yaml:"url"`
-	Summary  string `yaml:"summary"`
+	Title       string `yaml:"title"`
+	Platform    string `yaml:"platform"`
+	URL         string `yaml:"url"`
+	Domain      string `yaml:"domain"`
+	Summary     string `yaml:"summary"`
+	Description string `yaml:"description"`
 }
 
 type rawWorkSection struct {
@@ -175,10 +179,12 @@ func loadWorks(path string) ([]WorkSection, error) {
 		}
 		for _, item := range section.Items {
 			ws.Items = append(ws.Items, WorkItem{
-				Title:    item.Title,
-				Platform: item.Platform,
-				URL:      item.URL,
-				Summary:  item.Summary,
+				Title:       item.Title,
+				Platform:    item.Platform,
+				URL:         item.URL,
+				Domain:      item.Domain,
+				Summary:     item.Summary,
+				Description: item.Description,
 			})
 		}
 		works = append(works, ws)

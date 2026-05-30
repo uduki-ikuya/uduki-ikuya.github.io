@@ -401,10 +401,6 @@ html {
   grid-column: span 2;
 }
 
-#posting-sites .work-items>*:nth-child(n+3) p {
-  display: none;
-}
-
 .work-card {
   display: block;
   text-decoration: none;
@@ -432,6 +428,13 @@ html {
 
 .work-card-top strong {
   font-size: 1rem;
+}
+
+.work-domain {
+  margin: 0 0 0.45rem 0;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .work-platform {

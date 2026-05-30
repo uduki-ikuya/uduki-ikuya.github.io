@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="小説家・{{ .Profile.Name }}（uduki-ikuya）の公式ポートフォリオサイトです。プロフィール、作品案内、SNS、ブログをひとつのページにまとめました。">
+  <meta name="description"
+    content="小説家・{{ .Profile.Name }}（uduki-ikuya）の公式ポートフォリオサイトです。プロフィール、作品案内、SNS、ブログをひとつのページにまとめました。">
   <meta name="robots" content="index, follow">
   <title>{{ .Profile.Name }} | 小説家ポートフォリオ</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
 </head>
+
 <body>
   <nav class="page-nav">
     <button class="hamburger-toggle" aria-label="メニュー">
@@ -63,17 +67,31 @@
             <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
               <div class="work-card-top">
                 <strong>{{ .Title }}</strong>
-                <span class="work-platform">{{ .Platform }}</span>
               </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if eq .Platform "よく使うサイト" }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+              {{ else if eq .Platform "その他のサイト" }}
+              {{ else if .Summary }}
               <p>{{ .Summary }}</p>
+              {{ end }}
             </a>
             {{ else }}
             <div class="work-card">
               <div class="work-card-top">
                 <strong>{{ .Title }}</strong>
-                <span class="work-platform">{{ .Platform }}</span>
               </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if eq .Platform "よく使うサイト" }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+              {{ else if eq .Platform "その他のサイト" }}
+              {{ else if .Summary }}
               <p>{{ .Summary }}</p>
+              {{ end }}
             </div>
             {{ end }}
             {{ end }}
@@ -123,4 +141,5 @@
   </div>
   <script src="js/common.js"></script>
 </body>
+
 </html>
