@@ -40,10 +40,12 @@ type WorkItem struct {
 }
 
 type WorkSection struct {
-	ID          string
-	Title       string
-	Description string
-	Items       []WorkItem
+	ID           string
+	Title        string
+	Description  string
+	Items        []WorkItem
+	PrimaryItems []WorkItem
+	OtherItems   []WorkItem
 }
 
 // Profile represents the author's profile data.
@@ -104,10 +106,12 @@ type rawWorkItem struct {
 }
 
 type rawWorkSection struct {
-	ID          string        `yaml:"id"`
-	Title       string        `yaml:"title"`
-	Description string        `yaml:"description"`
-	Items       []rawWorkItem `yaml:"items"`
+	ID           string        `yaml:"id"`
+	Title        string        `yaml:"title"`
+	Description  string        `yaml:"description"`
+	Items        []rawWorkItem `yaml:"items"`
+	PrimaryItems []rawWorkItem `yaml:"primary-sites"`
+	OtherItems   []rawWorkItem `yaml:"other-sites"`
 }
 
 type rawWorks struct {
@@ -177,8 +181,29 @@ func loadWorks(path string) ([]WorkSection, error) {
 			Title:       section.Title,
 			Description: section.Description,
 		}
+
 		for _, item := range section.Items {
-			ws.Items = append(ws.Items, WorkItem{
+			wi := WorkItem{
+				Title:       item.Title,
+				Platform:    item.Platform,
+				URL:         item.URL,
+				Domain:      item.Domain,
+				Summary:     item.Summary,
+				Description: item.Description,
+			}
+			if section.ID == "posting-sites" {
+				if item.Platform == "よく使うサイト" {
+					ws.PrimaryItems = append(ws.PrimaryItems, wi)
+				} else {
+					ws.OtherItems = append(ws.OtherItems, wi)
+				}
+			} else {
+				ws.Items = append(ws.Items, wi)
+			}
+		}
+
+		for _, item := range section.PrimaryItems {
+			ws.PrimaryItems = append(ws.PrimaryItems, WorkItem{
 				Title:       item.Title,
 				Platform:    item.Platform,
 				URL:         item.URL,
@@ -187,6 +212,18 @@ func loadWorks(path string) ([]WorkSection, error) {
 				Description: item.Description,
 			})
 		}
+
+		for _, item := range section.OtherItems {
+			ws.OtherItems = append(ws.OtherItems, WorkItem{
+				Title:       item.Title,
+				Platform:    item.Platform,
+				URL:         item.URL,
+				Domain:      item.Domain,
+				Summary:     item.Summary,
+				Description: item.Description,
+			})
+		}
+
 		works = append(works, ws)
 	}
 	return works, nil

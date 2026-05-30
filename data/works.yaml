@@ -2,7 +2,7 @@ sections:
   - id: "posting-sites"
     title: "小説投稿サイト"
     description: "作品を投稿しているサイトをまとめています。よく使うサイトとその他の投稿先を掲載します。"
-    items:
+    primary-sites:
       - title: "📘 カクヨム"
         platform: "よく使うサイト"
         url: "https://kakuyomu.jp/users/uduki-ikuya"
@@ -13,6 +13,7 @@ sections:
         url: "http://mypage.syosetu.com/708500/"
         domain: syosetu.com
         description: "カクヨムの次に投稿作品が多いサイト。サイト独自のコンテストにも参加しています。"
+    other-sites:
       - title: "🌟 エブリスタ"
         platform: "その他のサイト"
         url: "https://estar.jp/users/145985279"

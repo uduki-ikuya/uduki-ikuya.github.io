@@ -61,6 +61,62 @@
         <article class="work-group" id="{{ .ID }}">
           <h3>{{ .Title }}</h3>
           <p class="work-section-description">{{ .Description }}</p>
+          {{ if eq .ID "posting-sites" }}
+          {{ if .PrimaryItems }}
+          <!--<h4 class="work-subheading">よく使うサイト</h4>-->
+          <div class="work-items posting-primary">
+            {{ range .PrimaryItems }}
+            {{ if .URL }}
+            <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </a>
+            {{ else }}
+            <div class="work-card">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+          {{ end }}
+          {{ if .OtherItems }}
+          <!--<h4 class="work-subheading">その他のサイト</h4>-->
+          <div class="work-items posting-other">
+            {{ range .OtherItems }}
+            {{ if .URL }}
+            <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+            </a>
+            {{ else }}
+            <div class="work-card">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+          {{ end }}
+          {{ else }}
           <div class="work-items">
             {{ range .Items }}
             {{ if .URL }}
@@ -96,6 +152,7 @@
             {{ end }}
             {{ end }}
           </div>
+          {{ end }}
         </article>
         {{ end }}
       </section>
