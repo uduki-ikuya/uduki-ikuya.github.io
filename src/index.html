@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="小説家・{{ .Profile.Name }}（uduki-ikuya）の公式ポートフォリオサイトです。プロフィール、作品案内、SNS、ブログをひとつのページにまとめました。">
+  <meta name="description" content="{{ .Profile.Description }}">
   <meta name="robots" content="index, follow">
   <title>{{ .Profile.Name }} | 小説家ポートフォリオ</title>
   <link rel="stylesheet" href="css/style.css">
@@ -33,7 +32,7 @@
         <div class="hero-text">
           <h1>{{ .Profile.Name }}</h1>
           <p class="subtitle">{{ .Profile.Subtitle }}</p>
-          <p class="hero-bio">{{ .Profile.Bio }}</p>
+          <p class="hero-bio">{{ .Profile.Description }}</p>
         </div>
       </div>
     </div>
@@ -43,10 +42,9 @@
         <div class="section-header">
           <h2>プロフィール</h2>
         </div>
-        <p class="section-desc">筆者の経歴や創作スタイルを紹介します。Web上に公開している作品を中心にまとめています。</p>
         <div class="section-grid">
           <div class="profile-card">
-            <h3>作家について</h3>
+            <h3>卯月幾哉について</h3>
             <p>{{ .Profile.Bio }}</p>
           </div>
         </div>
@@ -56,7 +54,7 @@
         <div class="section-header">
           <h2>作品案内</h2>
         </div>
-        <p class="section-desc">登録先掲載作品・おすすめ作品・投稿した小説の一覧を、ひとつのページでご紹介します。</p>
+        <p class="section-desc">利用している小説投稿サイトの情報を中心に掲載します。</p>
         {{ range .Works }}
         <article class="work-group" id="{{ .ID }}">
           <h3>{{ .Title }}</h3>
@@ -151,7 +149,7 @@
         <div class="section-header">
           <h2>SNS</h2>
         </div>
-        <p class="section-desc">作品案内や短文の創作を発信しています。主に X、Bluesky、Threads の情報を掲載中です。</p>
+        <p class="section-desc">主に投稿小説の更新情報や、140字小説などの投稿を行っています。Xがメインですが、だいたい投稿内容は同じです。</p>
         <div class="links-section">
           {{ range .Profile.Social }}
           <a href="{{ .URL }}" target="_blank" rel="noopener noreferrer" class="link-card" id="{{ .ID }}">
@@ -169,7 +167,7 @@
         <div class="section-header">
           <h2>ブログ</h2>
         </div>
-        <p class="section-desc">創作や詩、エッセイなどを掲載しているブログ・メディアです。各リンク先から詳細をご覧ください。</p>
+        <p class="section-desc">そのときどきで、自作に関する情報やエッセイ、創作論、詩などを綴ることがあります。</p>
         <div class="blog-grid">
           {{ range .Profile.Blogs }}
           <article class="blog-card">

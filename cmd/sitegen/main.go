@@ -50,6 +50,7 @@ type WorkSection struct {
 // Profile represents the author's profile data.
 type Profile struct {
 	Name     string
+	Description string
 	Subtitle string
 	Bio      string
 	Avatar   string
@@ -84,10 +85,13 @@ type rawBlogLink struct {
 }
 
 type rawProfile struct {
-	Name     string          `yaml:"name"`
-	Subtitle string          `yaml:"subtitle"`
-	Avatar   string          `yaml:"avatar"`
-	Bio      string          `yaml:"bio"`
+	Title       string          `yaml:"title"`
+	Subtitle    string          `yaml:"subtitle"`
+	Description string          `yaml:"description"`
+	Profile     struct {
+		Avatar string `yaml:"avatar"`
+		Bio    string `yaml:"bio"`
+	} `yaml:"profile"`
 	Details  []rawDetailItem `yaml:"details"`
 	Social   []rawLink       `yaml:"social"`
 	Blogs    []rawBlogLink   `yaml:"blogs"`
@@ -125,10 +129,11 @@ func loadProfile(path string) (Profile, error) {
 	}
 
 	p := Profile{
-		Name:     rp.Name,
-		Subtitle: rp.Subtitle,
-		Bio:      rp.Bio,
-		Avatar:   rp.Avatar,
+		Name:        rp.Title,
+		Description: rp.Description,
+		Subtitle:    rp.Subtitle,
+		Bio:         rp.Profile.Bio,
+		Avatar:      rp.Profile.Avatar,
 	}
 
 	for _, detail := range rp.Details {
