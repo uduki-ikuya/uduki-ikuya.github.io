@@ -1,10 +1,32 @@
 (function(){
+  const nav = document.querySelector('.page-nav');
+  const hamburger = document.querySelector('.hamburger-toggle');
   const links = Array.from(document.querySelectorAll('.page-nav a'));
   const sections = Array.from(document.querySelectorAll('main section[id]'));
   const idToLink = {};
   links.forEach(a => {
     const href = a.getAttribute('href') || '';
     if (href.startsWith('#')) idToLink[href.slice(1)] = a;
+  });
+
+  // Hamburger menu toggle
+  hamburger.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    nav.classList.toggle('open');
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (ev) => {
+    if (!nav.contains(ev.target)) {
+      nav.classList.remove('open');
+    }
+  });
+
+  // Close menu when a link is clicked
+  links.forEach(a => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('open');
+    });
   });
 
   // determine which section covers the viewport center
