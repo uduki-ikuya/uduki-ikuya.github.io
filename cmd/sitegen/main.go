@@ -203,18 +203,14 @@ func main() {
 	}
 
 	outputDir := "site"
-	if err := os.MkdirAll(filepath.Join(outputDir, "css"), 0755); err != nil {
-		log.Fatalf("Failed to create output directory: %v", err)
-	}
-	if err := os.MkdirAll(filepath.Join(outputDir, "image"), 0755); err != nil {
-		log.Fatalf("Failed to create images output directory: %v", err)
-	}
 
-	if err := copyFile("src/css/style.css", filepath.Join(outputDir, "css/style.css")); err != nil {
-		log.Fatalf("Failed to copy CSS: %v", err)
-	}
-	if err := copyDir("src/image", filepath.Join(outputDir, "image")); err != nil {
-		log.Fatalf("Failed to copy images: %v", err)
+	staticDirs := []string{"css", "js", "image"}
+	for _, dir := range staticDirs {
+		src := filepath.Join("src", dir)
+		dst := filepath.Join(outputDir, dir)
+		if err := copyDir(src, dst); err != nil {
+			log.Fatalf("Failed to copy %s: %v", dir, err)
+		}
 	}
 
 	tmpl, err := template.ParseFiles("src/index.html")
