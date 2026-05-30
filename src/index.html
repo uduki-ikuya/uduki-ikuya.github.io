@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ .Profile.Description }}">
+  <meta name="robots" content="index, follow">
+  <title>{{ .Profile.Name }} | 小説家ポートフォリオ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✍️</text></svg>">
+</head>
+
+<body>
+  <nav class="page-nav">
+    <button class="hamburger-toggle" aria-label="メニュー">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="#top">TOP</a>
+    <a href="#profile">プロフィール</a>
+    <a href="#works">作品案内</a>
+    <a href="#sns">SNS</a>
+    <a href="#blog">ブログ</a>
+  </nav>
+  <div class="container" id="top">
+    <div class="hero-panel">
+      <div class="hero-copy">
+        <img class="hero-avatar" src="{{ .Profile.Avatar }}" alt="{{ .Profile.Name }}のプロフィール画像">
+        <div class="hero-text">
+          <h1>{{ .Profile.Name }}</h1>
+          <p class="subtitle">{{ .Profile.Subtitle }}</p>
+          <p class="hero-bio">{{ .Profile.Description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <section id="profile" class="section panel">
+        <div class="section-header">
+          <h2>プロフィール</h2>
+        </div>
+        <div class="section-grid">
+          <div class="profile-card">
+            <h3>卯月幾哉について</h3>
+            <p>{{ .Profile.Bio }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="works" class="section panel">
+        <div class="section-header">
+          <h2>作品案内</h2>
+        </div>
+        <p class="section-desc">利用している小説投稿サイトの情報を中心に掲載します。</p>
+        {{ range .Works }}
+        <article class="work-group" id="{{ .ID }}">
+          <h3>{{ .Title }}</h3>
+          <p class="work-section-description">{{ .Description }}</p>
+          {{ if eq .ID "posting-sites" }}
+          {{ if .PrimaryItems }}
+          <!--<h4 class="work-subheading">よく使うサイト</h4>-->
+          <div class="work-items posting-primary">
+            {{ range .PrimaryItems }}
+            {{ if .URL }}
+            <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </a>
+            {{ else }}
+            <div class="work-card">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+          {{ end }}
+          {{ if .OtherItems }}
+          <!--<h4 class="work-subheading">その他のサイト</h4>-->
+          <div class="work-items posting-other">
+            {{ range .OtherItems }}
+            {{ if .URL }}
+            <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+            </a>
+            {{ else }}
+            <div class="work-card">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+          {{ end }}
+          {{ else }}
+          <div class="work-items">
+            {{ range .Items }}
+            {{ if .URL }}
+            <a class="work-card" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </a>
+            {{ else }}
+            <div class="work-card">
+              <div class="work-card-top">
+                <strong>{{ .Title }}</strong>
+              </div>
+              {{ if .Domain }}
+              <p class="work-domain">{{ .Domain }}</p>
+              {{ end }}
+              {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+          {{ end }}
+        </article>
+        {{ end }}
+      </section>
+
+      <section id="sns" class="section panel">
+        <div class="section-header">
+          <h2>SNS</h2>
+        </div>
+        <p class="section-desc">主に投稿小説の更新情報や、140字小説などの投稿を行っています。Xがメインですが、だいたい投稿内容は同じです。</p>
+        <div class="links-section">
+          {{ range .Profile.Social }}
+          <a href="{{ .URL }}" target="_blank" rel="noopener noreferrer" class="link-card" id="{{ .ID }}">
+            <div class="link-icon">{{ .SVGIcon }}</div>
+            <div class="link-info">
+              <span class="link-title">{{ .Title }}</span>
+              <span class="link-description">{{ .Description }}</span>
+            </div>
+          </a>
+          {{ end }}
+        </div>
+      </section>
+
+      <section id="blog" class="section panel">
+        <div class="section-header">
+          <h2>ブログ</h2>
+        </div>
+        <p class="section-desc">そのときどきで、自作に関する情報やエッセイ、創作論、詩などを綴ることがあります。</p>
+        <div class="blog-grid">
+          {{ range .Profile.Blogs }}
+          <article class="blog-card">
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Description }}</p>
+            <a class="blog-cta" href="{{ .URL }}" target="_blank" rel="noopener noreferrer">閲覧する</a>
+          </article>
+          {{ end }}
+        </div>
+      </section>
+    </main>
+
+    <div class="back-to-top-banner">
+      <a href="#top" class="back-to-top-link">↑ トップに戻る</a>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 {{ .Profile.Name }}. All rights reserved.</p>
+    </footer>
+  </div>
+  <script src="js/common.js"></script>
+</body>
+
+</html>
