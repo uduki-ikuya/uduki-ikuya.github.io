@@ -53,7 +53,6 @@ type Profile struct {
 	Subtitle string
 	Bio      string
 	Avatar   string
-	Cover    string
 	Details  []DetailItem
 	Social   []Link
 	Blogs    []BlogLink
@@ -88,7 +87,6 @@ type rawProfile struct {
 	Name     string          `yaml:"name"`
 	Subtitle string          `yaml:"subtitle"`
 	Avatar   string          `yaml:"avatar"`
-	Cover    string          `yaml:"cover"`
 	Bio      string          `yaml:"bio"`
 	Details  []rawDetailItem `yaml:"details"`
 	Social   []rawLink       `yaml:"social"`
@@ -131,7 +129,6 @@ func loadProfile(path string) (Profile, error) {
 		Subtitle: rp.Subtitle,
 		Bio:      rp.Bio,
 		Avatar:   rp.Avatar,
-		Cover:    rp.Cover,
 	}
 
 	for _, detail := range rp.Details {
