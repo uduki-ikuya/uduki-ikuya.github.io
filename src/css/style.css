@@ -279,6 +279,7 @@ html {
 .blog-panel p {
   margin: 0;
   color: var(--text-secondary);
+  white-space: pre-line;
 }
 
 .profile-card ul {
