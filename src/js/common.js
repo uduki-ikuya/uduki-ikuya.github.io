@@ -1,4 +1,4 @@
-(function(){
+(function () {
   const nav = document.querySelector('.page-nav');
   const hamburger = document.querySelector('.hamburger-toggle');
   const links = Array.from(document.querySelectorAll('.page-nav a'));
@@ -29,21 +29,33 @@
     });
   });
 
-  // determine which section covers the viewport center
-  function updateActive(){
-    const center = window.innerHeight / 2;
+  // determine which section should be marked active
+  function updateActive() {
+    const threshold = window.innerHeight * 0.42;
     let chosen = null;
-    let minDist = Number.POSITIVE_INFINITY;
-    sections.forEach(s => {
-      const r = s.getBoundingClientRect();
-      if (r.top <= center && r.bottom > center) {
-        chosen = s.id;
-        minDist = 0;
-      } else {
-        const dist = Math.min(Math.abs(r.top - center), Math.abs(r.bottom - center));
-        if (dist < minDist) { minDist = dist; chosen = s.id; }
+
+    const firstSection = sections[0];
+    if (firstSection) {
+      const firstRect = firstSection.getBoundingClientRect();
+      if (firstRect.top > threshold) {
+        chosen = 'top';
       }
-    });
+    }
+
+    if (!chosen) {
+      let minDist = Number.POSITIVE_INFINITY;
+      sections.forEach(s => {
+        const r = s.getBoundingClientRect();
+        if (r.top <= threshold && r.bottom > threshold) {
+          chosen = s.id;
+          minDist = 0;
+        } else {
+          const dist = Math.min(Math.abs(r.top - threshold), Math.abs(r.bottom - threshold));
+          if (dist < minDist) { minDist = dist; chosen = s.id; }
+        }
+      });
+    }
+
     if (chosen) {
       links.forEach(l => l.classList.remove('active'));
       if (idToLink[chosen]) idToLink[chosen].classList.add('active');
@@ -63,10 +75,12 @@
     ev.currentTarget.classList.add('active');
   }));
   window.addEventListener('load', () => {
-    const h = location.hash.replace('#','');
+    const h = location.hash.replace('#', '');
     if (h && idToLink[h]) {
       links.forEach(l => l.classList.remove('active'));
       idToLink[h].classList.add('active');
+    } else {
+      updateActive();
     }
   });
 })();
