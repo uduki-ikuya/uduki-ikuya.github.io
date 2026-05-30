@@ -127,12 +127,7 @@
               {{ if .Domain }}
               <p class="work-domain">{{ .Domain }}</p>
               {{ end }}
-              {{ if eq .Platform "よく使うサイト" }}
               {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
-              {{ else if eq .Platform "その他のサイト" }}
-              {{ else if .Summary }}
-              <p>{{ .Summary }}</p>
-              {{ end }}
             </a>
             {{ else }}
             <div class="work-card">
@@ -142,12 +137,7 @@
               {{ if .Domain }}
               <p class="work-domain">{{ .Domain }}</p>
               {{ end }}
-              {{ if eq .Platform "よく使うサイト" }}
               {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
-              {{ else if eq .Platform "その他のサイト" }}
-              {{ else if .Summary }}
-              <p>{{ .Summary }}</p>
-              {{ end }}
             </div>
             {{ end }}
             {{ end }}

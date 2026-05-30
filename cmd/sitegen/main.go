@@ -35,7 +35,6 @@ type WorkItem struct {
 	Platform    string
 	URL         string
 	Domain      string
-	Summary     string
 	Description string
 }
 
@@ -101,7 +100,6 @@ type rawWorkItem struct {
 	Platform    string `yaml:"platform"`
 	URL         string `yaml:"url"`
 	Domain      string `yaml:"domain"`
-	Summary     string `yaml:"summary"`
 	Description string `yaml:"description"`
 }
 
@@ -188,7 +186,6 @@ func loadWorks(path string) ([]WorkSection, error) {
 				Platform:    item.Platform,
 				URL:         item.URL,
 				Domain:      item.Domain,
-				Summary:     item.Summary,
 				Description: item.Description,
 			}
 			if section.ID == "posting-sites" {
@@ -208,7 +205,6 @@ func loadWorks(path string) ([]WorkSection, error) {
 				Platform:    item.Platform,
 				URL:         item.URL,
 				Domain:      item.Domain,
-				Summary:     item.Summary,
 				Description: item.Description,
 			})
 		}
@@ -219,7 +215,6 @@ func loadWorks(path string) ([]WorkSection, error) {
 				Platform:    item.Platform,
 				URL:         item.URL,
 				Domain:      item.Domain,
-				Summary:     item.Summary,
 				Description: item.Description,
 			})
 		}
