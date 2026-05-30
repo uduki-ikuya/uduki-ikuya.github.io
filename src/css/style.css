@@ -590,10 +590,37 @@ html {
   font-size: 0.95rem;
 }
 
+.back-to-top-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(64, 98, 160, 0.1);
+  border-top: 1px solid rgba(148, 157, 169, 0.2);
+}
+
+.back-to-top-link {
+  text-decoration: none;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.back-to-top-link:hover,
+.back-to-top-link:focus-visible {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
 footer {
   text-align: center;
-  margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.45);
+  padding: 2px 4px;
+  background-color: #000000;
+  color: #ffffff;
   font-family: var(--font-sans);
   font-size: 0.9rem;
 }
